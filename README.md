@@ -1,5 +1,8 @@
 # dispatch-mcp
 
+[![CI](https://github.com/selamy-labs/dispatch-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/selamy-labs/dispatch-mcp/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 `dispatch-mcp` is a small, **security-constrained** [Model Context
 Protocol](https://modelcontextprotocol.io) server that exposes exactly one
 capability as typed tools: *dispatch a unit of work to an allowlisted
