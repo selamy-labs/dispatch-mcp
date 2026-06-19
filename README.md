@@ -101,6 +101,28 @@ pipx install "dispatch-mcp[mcp] @ git+https://github.com/selamy-labs/dispatch-mc
 }
 ```
 
+## Observability (OpenTelemetry)
+
+The server runs unmodified under
+[OpenTelemetry zero-code auto-instrumentation](https://opentelemetry.io/docs/zero-code/python/).
+Install the `otel` extra and launch via `opentelemetry-instrument`:
+
+```bash
+pipx install "dispatch-mcp[mcp,otel] @ git+https://github.com/selamy-labs/dispatch-mcp@v0.1.0"
+OTEL_SERVICE_NAME=dispatch-mcp \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317 \
+OTEL_TRACES_EXPORTER=otlp \
+  opentelemetry-instrument dispatch-mcp
+```
+
+Config is **vendor-neutral** — point `OTEL_EXPORTER_OTLP_ENDPOINT` at any OTLP
+collector; the collector (not this server) owns any Cloud Trace / vendor coupling.
+
+> **stdio safety (required):** this server speaks MCP over stdin/stdout, so its
+> stdout carries the JSON-RPC protocol. Export traces/logs via **OTLP only** —
+> **never** set `OTEL_TRACES_EXPORTER=console` (or any stdout exporter), which
+> would interleave span output into the protocol stream and break the client.
+
 ## Architecture
 
 The dispatch logic lives once in `dispatch_mcp.core.Dispatcher`; the MCP server
